@@ -1,0 +1,31 @@
+name: Automatic Rebase
+on:
+  issue_comment:
+    types: [created]
+jobs:
+  rebase:
+    name: Rebase
+    # if: >-
+    #   github.event.issue.pull_request != '' && github.event.comment.body == '/rebase'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the latest code
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
+      - name: test2
+        run: ./a.sh
+        id: branch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: dfsds
+        run: echo ${{ steps.branch.outputs.head_branch }}
+
+      - name: test3
+        run: git checkout ${{ steps.branch.outputs.head_branch }} && ls
+
+      - name: fdfdfdfd
+        run: git config --global user.email "you@example.com" && git config --global user.name "Your Name"
+      - name: Comment on PR
+        run: git checkout main && touch a && git add a && git commit -m "void" && git push 
